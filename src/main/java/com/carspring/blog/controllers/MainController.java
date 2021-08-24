@@ -1,5 +1,8 @@
 package com.carspring.blog.controllers;
 
+import com.carspring.blog.models.Post;
+import com.carspring.blog.repos.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +20,15 @@ public class MainController {
         model.addAttribute("title", "About us");
         return "about";
     }
-    @GetMapping("/blog-main")
-    public String blogMain(Model model) {
-        model.addAttribute("title", "Blog Main");
-        return "blog-main";
+    @Autowired
+    private PostRepository postRepository;
+
+    @GetMapping("/blog")
+    public String blog(Model model) {
+        model.addAttribute("title", "Blog");
+        Iterable<Post> posts = postRepository.findAll();
+        model.addAttribute("posts", posts);
+        return "blog";
     }
 
 }
